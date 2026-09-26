@@ -5,7 +5,6 @@ __pycache__/
 
 # Trained model artifacts -- everyone trains their own locally,
 # no reason to bloat the repo with binary checkpoints
-checkpoints/*.pt
 
 # Large downloaded/generated dataset files -- reproducible via fetch_data.py,
 # no need to commit the raw text
