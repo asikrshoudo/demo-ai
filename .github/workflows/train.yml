@@ -9,6 +9,9 @@ on:
       - "*.py"
       - ".github/workflows/train.yml"
 
+permissions:
+  contents: write   # needed so the workflow can commit the checkpoint back
+
 jobs:
   train:
     runs-on: ubuntu-latest
