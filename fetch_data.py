@@ -1,47 +1,69 @@
 """
-Downloads a chunk of the TinyStories dataset (Eldan & Li, Microsoft Research) --
-short, simple English stories written specifically to be learnable by small
-language models. Source: https://huggingface.co/datasets/roneneldan/TinyStories
+Builds train.txt from two sources:
 
-We use the smaller "valid" split (not the full 1.9GB train file) and cut it
-down to a target character count, since our model is tiny and doesn't need
-(or benefit from) the entire multi-GB dataset.
+1. daily_dialog (ConvLab's HuggingFace mirror) -- real, human-written
+   everyday conversations. Formatted with USER:/A: tags.
+2. TinyStories -- simple narrative stories, tagged with STORY:.
+
+Keeping the tags distinct is what lets the model tell "reply mode" apart
+from "narrative mode", instead of always drifting into story-continuation.
 """
 
 import urllib.request
+import zipfile
+import json
 
-SOURCE_URL = "https://huggingface.co/datasets/roneneldan/TinyStories/resolve/main/TinyStories-valid.txt"
-RAW_PATH = "data/tinystories_raw.txt"
+DAILYDIALOG_ZIP_URL = "https://huggingface.co/datasets/ConvLab/dailydialog/resolve/main/data.zip"
+DAILYDIALOG_ZIP_PATH = "data/dailydialog.zip"
+
+STORIES_URL = "https://huggingface.co/datasets/roneneldan/TinyStories/resolve/main/TinyStories-valid.txt"
+STORIES_RAW_PATH = "data/tinystories_raw.txt"
+
 OUTPUT_PATH = "data/train.txt"
-
-# ~8 million characters ≈ 5-10 million tokens once combined with our existing
-# small conversational dataset. Adjust this if you want more/less.
-TARGET_CHARS = 8_000_000
+STORY_TARGET_CHARS = 1_500_000
 
 
-def download():
-    print(f"Downloading from {SOURCE_URL} ...")
-    urllib.request.urlretrieve(SOURCE_URL, RAW_PATH)
-    print(f"Saved to {RAW_PATH}")
+def fetch_conversations():
+    print("Downloading daily_dialog...")
+    urllib.request.urlretrieve(DAILYDIALOG_ZIP_URL, DAILYDIALOG_ZIP_PATH)
+
+    with zipfile.ZipFile(DAILYDIALOG_ZIP_PATH, "r") as z:
+        with z.open("data/dialogues.json") as f:
+            dialogues = json.load(f)
+
+    lines = []
+    for dialogue in dialogues:
+        for turn in dialogue["turns"]:
+            # map their "user"/"system" labels onto our USER:/A: tags
+            speaker = "USER" if turn["speaker"] == "user" else "A"
+            utterance = turn["utterance"].strip()
+            if utterance:
+                lines.append(f"{speaker}:\n{utterance}\n")
+
+    return "\n".join(lines)
 
 
-def build_train_file():
-    with open(RAW_PATH, "r", encoding="utf-8") as f:
-        text = f.read(TARGET_CHARS)
+def fetch_stories():
+    print("Downloading TinyStories sample...")
+    urllib.request.urlretrieve(STORIES_URL, STORIES_RAW_PATH)
+    with open(STORIES_RAW_PATH, "r", encoding="utf-8") as f:
+        text = f.read(STORY_TARGET_CHARS)
+    return f"STORY:\n{text}\n"
 
-    # keep our existing small conversational examples too, so the model
-    # still sees dialogue-style text, not just narrative stories
-    with open("data/conversations_en.txt", "r", encoding="utf-8") as f:
-        conversations = f.read()
 
-    combined = conversations + "\n\n" + text
+def main():
+    conversations = fetch_conversations()
+    stories = fetch_stories()
+
+    combined = conversations + "\n\n" + stories
 
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         f.write(combined)
 
-    print(f"Final train.txt size: {len(combined):,} characters")
+    print(f"Conversation text: {len(conversations):,} characters")
+    print(f"Story text:        {len(stories):,} characters")
+    print(f"Total train.txt:   {len(combined):,} characters")
 
 
 if __name__ == "__main__":
-    download()
-    build_train_file()
+    main()
