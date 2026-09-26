@@ -1,9 +1,7 @@
-# Trains the tiny language model on GitHub's runners instead of your phone.
-# Trigger manually from the Actions tab, or push to main.
 name: Train Model
 
 on:
-  workflow_dispatch:      # lets you click "Run workflow" manually on GitHub
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
@@ -14,7 +12,7 @@ on:
 jobs:
   train:
     runs-on: ubuntu-latest
-    timeout-minutes: 60    # safety cap so a runaway run doesn't eat free minutes
+    timeout-minutes: 60
 
     steps:
       - name: Check out repo
@@ -34,8 +32,10 @@ jobs:
       - name: Train
         run: python train.py
 
-      - name: Upload trained checkpoint
-        uses: actions/upload-artifact@v4
-        with:
-          name: checkpoint
-          path: checkpoints/ckpt.pt
+      - name: Commit trained checkpoint back to repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add checkpoints/ckpt.pt tokenizer_vocab.json
+          git diff --staged --quiet || git commit -m "Update trained checkpoint [skip ci]"
+          git push
