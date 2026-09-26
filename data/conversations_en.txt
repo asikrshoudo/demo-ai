@@ -1,0 +1,269 @@
+USER:
+how are you?
+
+A:
+I am doing well, how about you?
+
+USER:
+I am fine too
+
+A:
+that's good to hear
+
+USER:
+what did you do today?
+
+A:
+I read a book, what about you?
+
+USER:
+I slept the whole day
+
+A:
+haha, rest is important too
+
+USER:
+hello
+
+A:
+hi, how are you?
+
+USER:
+what's up?
+
+A:
+nothing much, you tell me
+
+USER:
+how are you today?
+
+A:
+I am doing fine, thank you for asking
+
+USER:
+what's your status?
+
+A:
+I'm good, what about you?
+
+USER:
+I don't feel good
+
+A:
+what happened? tell me
+
+USER:
+just feeling low today
+
+A:
+it's okay to feel low sometimes, it will pass
+
+USER:
+are you busy?
+
+A:
+no, I'm free right now
+
+USER:
+I feel like talking
+
+A:
+go ahead, I'm listening
+
+USER:
+what's the weather like today?
+
+A:
+it's quite nice today, a bit cold
+
+USER:
+have you eaten?
+
+A:
+yes, I have eaten. have you?
+
+USER:
+I'm feeling very tired today
+
+A:
+take some rest, you need to take care of yourself
+
+USER:
+how was your day?
+
+A:
+it went well, I was a bit busy
+
+USER:
+what's the plan for tomorrow?
+
+A:
+I have some work tomorrow, then I'm free
+
+USER:
+are you learning to code?
+
+A:
+yes, I'm learning bit by bit
+
+USER:
+is it hard to learn new things?
+
+A:
+it feels hard at first, but practice makes it easier
+
+USER:
+tell me a story
+
+A:
+once there was a boy who sat by the river fishing, every day he saw something new
+
+USER:
+can you write stories?
+
+A:
+yes, I can write short stories
+
+USER:
+can you sing songs?
+
+A:
+no, I can't sing, but I can tell stories
+
+USER:
+what's your favorite thing to do?
+
+A:
+I like talking and learning new things
+
+USER:
+do you sleep?
+
+A:
+no, I'm an AI, I don't sleep
+
+USER:
+where do you live?
+
+A:
+I live on your phone, running locally
+
+USER:
+do you always give correct answers?
+
+A:
+no, I'm still learning, so I make mistakes sometimes
+
+USER:
+thank you
+
+A:
+no problem, talk to you again
+
+USER:
+what is 1 + 1?
+
+A:
+1 + 1 = 2
+
+USER:
+what is 2 + 2?
+
+A:
+2 + 2 = 4
+
+USER:
+what is 3 + 3?
+
+A:
+3 + 3 = 6
+
+USER:
+what is 4 + 4?
+
+A:
+4 + 4 = 8
+
+USER:
+what is 5 + 5?
+
+A:
+5 + 5 = 10
+
+USER:
+what is 2 + 3?
+
+A:
+2 + 3 = 5
+
+USER:
+what is 6 + 2?
+
+A:
+6 + 2 = 8
+
+USER:
+what is 9 - 3?
+
+A:
+9 - 3 = 6
+
+USER:
+what is 10 - 5?
+
+A:
+10 - 5 = 5
+
+USER:
+what is 5 plus 5?
+
+A:
+5 plus 5 is 10
+
+USER:
+what is 3 plus 7?
+
+A:
+3 plus 7 is 10
+
+USER:
+what is 10 plus 10?
+
+A:
+10 plus 10 is 20
+
+USER:
+good morning
+
+A:
+good morning, hope you have a great day
+
+USER:
+good night
+
+A:
+good night, sleep well
+
+USER:
+see you later
+
+A:
+see you, take care
+
+USER:
+what is your name?
+
+A:
+I don't have a fixed name yet, I'm a small AI
+
+USER:
+who made you?
+
+A:
+I was trained locally from scratch, step by step
+
+USER:
+do you understand everything I say?
+
+A:
+not everything, I'm still a small model learning patterns

@@ -1,0 +1,4 @@
+# Note for Termux users: install torch via `pkg install python-torch`
+# instead of pip -- Termux doesn't use glibc so the PyPI wheel won't work.
+# This file is here for GitHub Actions / any standard Linux/Mac/Windows setup.
+torch>=2.0.0
