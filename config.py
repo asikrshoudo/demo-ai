@@ -1,20 +1,19 @@
-"""Central config for the tiny language model. Change these to experiment
-with model size, training length, and generation behavior."""
+"""Central config for the tiny language model."""
 
 # Tokenizer / data
-CONTEXT_LENGTH = 128       # how many previous tokens the model can see at once
+CONTEXT_LENGTH = 128
 
-# Model architecture (~600K params at these settings)
-N_EMBD = 128                # dimensionality of each token's vector
-N_LAYER = 3                 # number of transformer blocks stacked
-N_HEAD = 4                  # attention heads per block
+# Model architecture (~1M params at these settings)
+N_EMBD = 160
+N_LAYER = 3
+N_HEAD = 4
 
 # Training
-BATCH_SIZE = 16
+BATCH_SIZE = 32
 LEARNING_RATE = 3e-4
-MAX_STEPS = 3000
-EVAL_INTERVAL = 200
-CHECKPOINT_INTERVAL = 500
+MAX_STEPS = 5000
+EVAL_INTERVAL = 250
+CHECKPOINT_INTERVAL = 1000
 
 # Generation
 TEMPERATURE = 0.8

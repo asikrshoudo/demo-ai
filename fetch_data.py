@@ -1,46 +1,47 @@
 """
-Downloads a public-domain text (Aesop's Fables, via Project Gutenberg) and
-strips Gutenberg's license header/footer, leaving just the story text.
+Downloads a chunk of the TinyStories dataset (Eldan & Li, Microsoft Research) --
+short, simple English stories written specifically to be learnable by small
+language models. Source: https://huggingface.co/datasets/roneneldan/TinyStories
 
-Run this once before training if data/gutenberg_clean.txt doesn't exist yet.
+We use the smaller "valid" split (not the full 1.9GB train file) and cut it
+down to a target character count, since our model is tiny and doesn't need
+(or benefit from) the entire multi-GB dataset.
 """
 
-import re
 import urllib.request
 
-GUTENBERG_URL = "https://www.gutenberg.org/cache/epub/21/pg21.txt"
-RAW_PATH = "data/raw_gutenberg.txt"
-CLEAN_PATH = "data/gutenberg_clean.txt"
+SOURCE_URL = "https://huggingface.co/datasets/roneneldan/TinyStories/resolve/main/TinyStories-valid.txt"
+RAW_PATH = "data/tinystories_raw.txt"
+OUTPUT_PATH = "data/train.txt"
 
-START_MARKER = "*** START OF THE PROJECT GUTENBERG"
-END_MARKER = "*** END OF THE PROJECT GUTENBERG"
+# ~8 million characters ≈ 5-10 million tokens once combined with our existing
+# small conversational dataset. Adjust this if you want more/less.
+TARGET_CHARS = 8_000_000
 
 
 def download():
-    print(f"Downloading {GUTENBERG_URL} ...")
-    urllib.request.urlretrieve(GUTENBERG_URL, RAW_PATH)
+    print(f"Downloading from {SOURCE_URL} ...")
+    urllib.request.urlretrieve(SOURCE_URL, RAW_PATH)
     print(f"Saved to {RAW_PATH}")
 
 
-def clean():
+def build_train_file():
     with open(RAW_PATH, "r", encoding="utf-8") as f:
-        text = f.read()
+        text = f.read(TARGET_CHARS)
 
-    start = text.find(START_MARKER)
-    start = text.find("\n", start) + 1 if start != -1 else 0
+    # keep our existing small conversational examples too, so the model
+    # still sees dialogue-style text, not just narrative stories
+    with open("data/conversations_en.txt", "r", encoding="utf-8") as f:
+        conversations = f.read()
 
-    end = text.find(END_MARKER)
-    end = end if end != -1 else len(text)
+    combined = conversations + "\n\n" + text
 
-    body = text[start:end].strip()
-    body = re.sub(r"\n{3,}", "\n\n", body)  # collapse extra blank lines
+    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
+        f.write(combined)
 
-    with open(CLEAN_PATH, "w", encoding="utf-8") as f:
-        f.write(body)
-
-    print(f"Cleaned text written to {CLEAN_PATH} ({len(body)} chars)")
+    print(f"Final train.txt size: {len(combined):,} characters")
 
 
 if __name__ == "__main__":
     download()
-    clean()
+    build_train_file()
