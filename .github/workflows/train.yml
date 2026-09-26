@@ -1,0 +1,41 @@
+# Trains the tiny language model on GitHub's runners instead of your phone.
+# Trigger manually from the Actions tab, or push to main.
+name: Train Model
+
+on:
+  workflow_dispatch:      # lets you click "Run workflow" manually on GitHub
+  push:
+    branches: [main]
+    paths:
+      - "data/**"
+      - "*.py"
+      - ".github/workflows/train.yml"
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60    # safety cap so a runaway run doesn't eat free minutes
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Fetch training data
+        run: python fetch_data.py
+
+      - name: Train
+        run: python train.py
+
+      - name: Upload trained checkpoint
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkpoint
+          path: checkpoints/ckpt.pt
