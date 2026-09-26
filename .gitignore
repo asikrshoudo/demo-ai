@@ -15,3 +15,6 @@ data/gutenberg_clean.txt
 .DS_Store
 *.swp
 data/tinystories_raw.txt
+data/train.txt
+data/dailydialog.zip
+data/dailydialog_raw/
