@@ -1,4 +1,12 @@
-# Note for Termux users: install torch via `pkg install python-torch`
-# instead of pip -- Termux doesn't use glibc so the PyPI wheel won't work.
-# This file is here for GitHub Actions / any standard Linux/Mac/Windows setup.
+# Core dependency: the actual neural network library (tensors, autograd, nn layers)
 torch>=2.0.0
+
+# Not strictly required by our code, but torch internally checks for numpy
+# and prints a warning if it's missing. Including it keeps logs clean.
+numpy>=1.24.0
+
+# Everything else this project uses (json, random, math, argparse, os,
+# urllib, re) is part of Python's standard library -- no extra install needed.
+
+# Termux note: don't pip-install torch here, use `pkg install python-torch`
+# instead (Termux uses bionic libc, not glibc, so PyPI's torch wheel won't run).
